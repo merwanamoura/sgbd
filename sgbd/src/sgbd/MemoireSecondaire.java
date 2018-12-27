@@ -5,19 +5,14 @@
  */
 package sgbd;
 
+import java.util.List;
+
 /**
  *
  * @author amoura_merwan
  */
-public class Sgbd {
-
-    /**
-     * @param args the command line arguments
-     */
-    MemoireCentrale mc;
-    MemoireSecondaire ms;
-    public static void main(String[] args) {
-        // TODO code application logic here
-    }
-    
+public class MemoireSecondaire {
+    int tailleMax;
+    List<Bloc> listeBloc;
+    int nbBlocMax;
 }
