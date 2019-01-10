@@ -9,7 +9,31 @@ package sgbd;
  *
  * @author amoura_merwan
  */
-public class Buffer {
-    int id;
-    Tuple tuple;
+public class Buffer extends Thread {
+    
+    Bloc bloc;
+    
+    public Buffer(Bloc bloc)
+    {
+        this.bloc = bloc;
+    }
+    
+    public Buffer()
+    {
+        this.bloc = null ;
+    }
+
+    public Bloc getBloc() {
+        return bloc;
+    }
+
+    public void setBloc(Bloc bloc) {
+        this.bloc = bloc;
+    }
+    
+  
+    
+    
+    
+    
 }

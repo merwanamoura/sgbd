@@ -5,6 +5,7 @@
  */
 package sgbd;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,6 +13,38 @@ import java.util.List;
  * @author amoura_merwan
  */
 public class Table {
-    List<Extent> listeExtent;
-    List<Attribut> listeAttributs;
+    Segment segment;
+    String table_name;
+
+
+    public Table(String table_name,Segment segment) {
+        this.segment = segment;
+        this.table_name = table_name;
+    }
+    
+
+    public Segment getSegment() {
+        return segment;
+    }
+
+    public void setSegment(Segment segment) {
+        this.segment = segment;
+    }
+
+    public String getTable_name() {
+        return table_name;
+    }
+
+    public void setTable_name(String table_name) {
+        this.table_name = table_name;
+    }
+    
+    public void insertInto(Tuple tup)
+    {
+        if(tup != null ) 
+        {
+            Bloc bloc = this.segment.getBlocFree();
+            bloc.getListeTuples().add(tup);
+        }
+    }
 }

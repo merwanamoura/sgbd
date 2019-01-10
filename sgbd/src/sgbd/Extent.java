@@ -5,6 +5,7 @@
  */
 package sgbd;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,4 +15,27 @@ import java.util.List;
 public class Extent {
     List<Bloc> listeBloc;
     int nbBloc;
+    
+    public List<Bloc> getListeBloc() {
+        return listeBloc;
+    }
+
+    public void setListeBloc(List<Bloc> listeBloc) {
+        this.listeBloc = listeBloc;
+    }
+
+    public int getNbBloc() {
+        return nbBloc;
+    }
+
+    public void setNbBloc(int nbBloc) {
+        this.nbBloc = nbBloc;
+    }
+    
+
+    public Extent( int nbBloc) {
+        this.listeBloc = new ArrayList<Bloc>();
+        this.nbBloc = nbBloc;
+    }
+   
 }

@@ -5,6 +5,7 @@
  */
 package sgbd;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,7 +13,21 @@ import java.util.List;
  * @author amoura_merwan
  */
 public class MemoireSecondaire {
-    int tailleMax;
-    List<Bloc> listeBloc;
-    int nbBlocMax;
+    
+    List<Bucket> listeBucket ;
+
+    public MemoireSecondaire() {
+        this.listeBucket = new ArrayList<Bucket>();
+    }
+
+    public List<Bucket> getListeBucket() {
+        return listeBucket;
+    }
+
+    public void setListeBucket(List<Bucket> listeBucket) {
+        this.listeBucket = listeBucket;
+    }
+
+    
+    
 }

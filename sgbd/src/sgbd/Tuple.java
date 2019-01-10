@@ -5,6 +5,7 @@
  */
 package sgbd;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,5 +13,28 @@ import java.util.List;
  * @author amoura_merwan
  */
 public class Tuple {
-    List<Valeur> listeValeur;
+    List<Attribut> listeAttribut;
+    int taille;
+
+    public Tuple() {
+        this.listeAttribut = new ArrayList<Attribut>();
+        this.taille = 1;
+    }
+
+    public List<Attribut> getListeAttribut() {
+        return listeAttribut;
+    }
+
+    public void setListeAttribut(List<Attribut> listeAttribut) {
+        this.listeAttribut = listeAttribut;
+    }
+
+    public int getTaille() {
+        return taille;
+    }
+
+    public void setTaille(int taille) {
+        this.taille = taille;
+    }
+
 }
