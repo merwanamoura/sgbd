@@ -23,7 +23,7 @@ public class Bucket {
     }
     
     public Bucket(){
-        this.listBloc = null;
+        this.listBloc = new ArrayList<Bloc>();
         this.id_bucket = "default";
     }
 
@@ -43,5 +43,25 @@ public class Bucket {
         this.id_bucket = id_bucket;
     }
     
+    public void insertTuple(Tuple tup)
+    {
+        boolean blocFree = false;
+        for(int i=0;i<listBloc.size();i++)
+        {
+            if(listBloc.get(i).nbTuple <listBloc.get(i).nbTupleMax )
+            {
+                blocFree=true;
+                listBloc.get(i).addTupleToBloc(tup);
+            }
+        }
+        
+        if(!blocFree)
+        {
+            Bloc bloc = new Bloc(8192,Sgbd.derniereAdressealoue++,true,Sgbd.nbTupleMax);
+            bloc.addTupleToBloc(tup);
+            listBloc.add(bloc);
+        }
+        
+    }
     
 }

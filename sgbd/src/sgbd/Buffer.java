@@ -9,7 +9,7 @@ package sgbd;
  *
  * @author amoura_merwan
  */
-public class Buffer extends Thread {
+public class Buffer{
     
     Bloc bloc;
     

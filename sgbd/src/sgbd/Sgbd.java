@@ -18,6 +18,8 @@ public class Sgbd {
     
     static List<Bloc> listBloc;//DISQUE
     static int nbBlocPerExtent = 5;
+    static int derniereAdressealoue=0;
+    static int nbTupleMax = 10;
     
     static void initBlocs(int nb)
     {
@@ -28,8 +30,9 @@ public class Sgbd {
             boolean bol=true;
             if( val > 0.2)bol=false;
             
-            Bloc bloc = new Bloc(8192,i,bol,10);
+            Bloc bloc = new Bloc(8192,i,bol,nbTupleMax);
             listBloc.add(bloc);
+            derniereAdressealoue = i;
         }
     }
     
@@ -115,6 +118,11 @@ public class Sgbd {
     public static void main(String[] args) {
         // TODO code application logic here
         
+        MC = new MemoireCentrale();
+        MS = new MemoireSecondaire();
+        
+        listBloc = new ArrayList<Bloc>();
+        
         initBlocs(200);
         
         Tuple tupleAntoine = new Tuple();
@@ -151,9 +159,26 @@ public class Sgbd {
         tupleNorges.getListeAttribut().add(new Attribut("int","nbHabitant","2000"));
         
         Table tableVille = createTable("Ville");
-        tableEtudiant.insertInto(tupleDijon);
-        tableEtudiant.insertInto(tupleDaix);
-        tableEtudiant.insertInto(tupleNorges);
+        tableVille.insertInto(tupleDijon);
+        tableVille.insertInto(tupleDaix);
+        tableVille.insertInto(tupleNorges);
+        
+         
+       Segment seg = tableEtudiant.getSegment();
+        for(int i=0;i<seg.getListExtent().size();i++)
+        {
+           
+            for(int j=0;j<seg.getListExtent().get(i).getListeBloc().size();j++)
+            { 
+                Bloc bloc = seg.getListExtent().get(i).getListeBloc().get(j);
+                for(int k = 0; k< bloc.getListeTuples().size();k++)
+                {
+                    Tuple tuple = bloc.getListeTuples().get(k);
+                    System.out.println(tuple.getListeAttribut().get(1).getValeur());
+                }
+            }
+        }
+        
         
         creationBuffer();
         MC.setListeBuffer(listBuffer);
@@ -161,9 +186,21 @@ public class Sgbd {
         creationBucket();
         MS.setListeBucket(listBucket);
         
+        MC.hashTable(tableVille,"nom",4);
+        MC.hashTable(tableEtudiant,"ville",4);
+       
         
-        
-        
+        for(int i=0;i<MS.listeBucket.size();i++)
+        {
+            for(int j = 0; j < MS.listeBucket.get(i).getListBloc().size();j++)
+            {
+               
+                for(int k = 0; k < MS.listeBucket.get(i).getListBloc().get(j).getListeTuples().size();k++)
+                {
+                    System.out.println( MS.listeBucket.get(i).getId_bucket()+"  "+MS.listeBucket.get(i).getListBloc().get(j).getListeTuples().get(k).listeAttribut.get(0).valeur);
+                }
+            }
+        }
         
     }
     

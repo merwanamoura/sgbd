@@ -52,6 +52,7 @@ public class Segment {
                 }
             }
         }
+       
         Extent ext =  Sgbd.findExtent(Sgbd.nbBlocPerExtent);
         if(ext !=null )
         {

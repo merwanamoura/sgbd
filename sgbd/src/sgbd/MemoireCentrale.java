@@ -5,6 +5,7 @@
  */
 package sgbd;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,14 +14,14 @@ import java.util.List;
  */
 public class MemoireCentrale {
     
-    List<Buffer> listeBuffer;
+    static List<Buffer> listeBuffer;
     
     public List<Buffer> getListeBuffer() {
         return listeBuffer;
     }
 
-    public MemoireCentrale(List<Buffer> listeBuffer) {
-        this.listeBuffer = listeBuffer;
+    public MemoireCentrale() {
+        this.listeBuffer = new ArrayList<Buffer>();
     }
 
     public void setListeBuffer(List<Buffer> listeBuffer) {
@@ -30,7 +31,7 @@ public class MemoireCentrale {
     
     
     
-    
+
     public static int hashage(String valueToHash,int moduloHashage)
     {
         int valeurHashage = 0 ;
@@ -52,38 +53,128 @@ public class MemoireCentrale {
        
     }
     
-    public static void hashTable(Table table)
+    public static void hashBloc(String table_name,Bloc bloc,String nomAttribut,int moduloHashage,Buffer buf)
     {
-        Segment seg = table.getSegment();
-        boolean hashDone = false;
         
-     
-        for(int i = 0; i < seg.getListExtent().size();i++)
+        for(int i=0;i<bloc.getListeTuples().size();i++)
         {
-            for(int j=0;j < seg.getListExtent().get(i).getListeBloc().size();j++)
+            
+            Tuple tuple = bloc.getListeTuples().get(i);
+            String val;
+            for(int j = 0; j<tuple.getListeAttribut().size();j++)
             {
-                
+              
+                if(tuple.getListeAttribut().get(j).getNom().equals(nomAttribut))
+                {
+                    val = tuple.getListeAttribut().get(j).getValeur();
+                    int hashValue = hashage(val,moduloHashage);
+                    
+                    
+                    boolean buckExist = false;
+                      
+                    for(int k = 0;k < Sgbd.MS.getListeBucket().size();k++)
+                    {
+                        Bucket buc = Sgbd.MS.getListeBucket().get(k);
+                        if(buc.getId_bucket().equals(""+table_name+hashValue))
+                        {
+                            
+                            buckExist = true;
+                            buc.insertTuple(tuple);
+                            buf.setBloc(null);
+                        } 
+                    }
+                    if(!buckExist)
+                    {
+                        Bucket buc = new Bucket(""+table_name+hashValue);
+                        buc.insertTuple(tuple);
+                        Sgbd.MS.getListeBucket().add(buc);
+                        buf.setBloc(null);
+
+                       // Sgbd.MS.getListeBucket().add(buc);
+                    }
+                    
+                    
+                }
             }
         }
     }
     
-    public int getNbBufferFree(){
-        int nb = 0 ;
-        for (int i = 0 ; i < Sgbd.MC.getListeBuffer().size() ; i++)
+    public static void hashTable(Table table,String nomAttribut,int moduloHashage)
+    {
+        Segment seg = table.getSegment();
+        boolean hashDone = false;
+        
+        int i=0;
+        int j=0;
+       
+        while(!hashDone)
         {
-            Buffer b = Sgbd.MC.getListeBuffer().get(i);
-            if( b == null) nb++;
+            int nbufferFree = getNbBufferFree();
+            
+            if(nbufferFree > 0)
+            {
+                int tmp = 0 ;
+                for(int k = 0;k < nbufferFree;k++)
+                {
+                    if(j+k < seg.getListExtent().get(i).getListeBloc().size() ) 
+                    {
+                        
+                        getBufferFree().setBloc( seg.getListExtent().get(i).getListeBloc().get(j+k) );
+                       
+                        tmp++;
+                    }
+                   
+                }
+  
+                j+=tmp;
+            }
+            
+            for(int k = 0;k < listeBuffer.size();k++)
+            {
+                
+                Bloc bloc2 = listeBuffer.get(k).getBloc();
+                if(bloc2!=null)
+                {
+                    
+                    hashBloc(table.getTable_name(),bloc2,nomAttribut,moduloHashage,listeBuffer.get(k));
+                }
+
+
+            }
+            
+             
+            if( j >= seg.getListExtent().get(i).getListeBloc().size() -1)
+            {
+                i++;
+                j = 0;
+            }
+            if( i >= seg.getListExtent().size())
+            {
+                hashDone = true;
+            }
+            
+        }
+        
+        
+    }
+    
+    public static int getNbBufferFree(){
+        int nb = 0 ;
+        for (int i = 0 ; i < listeBuffer.size() ; i++)
+        {
+            Buffer b = listeBuffer.get(i);
+            if( b.bloc == null) nb++;
         }
         return nb;
     }
     
-    public Buffer getBufferFree()
+    static public Buffer getBufferFree()
     {
         Buffer buff= null;
-        for (int i = 0 ; i < Sgbd.MC.getListeBuffer().size() ; i++)
+        for (int i = 0 ; i < listeBuffer.size() ; i++)
         {
-            Buffer b = Sgbd.MC.getListeBuffer().get(i);
-            if( b == null) return b;
+            Buffer b = listeBuffer.get(i);
+            if( b.bloc == null) return b;
         }
         return buff;
     }

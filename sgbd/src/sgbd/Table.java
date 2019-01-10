@@ -43,8 +43,15 @@ public class Table {
     {
         if(tup != null ) 
         {
-            Bloc bloc = this.segment.getBlocFree();
-            bloc.getListeTuples().add(tup);
+            if(this.segment.getBlocFree() != null)
+            {
+
+                this.segment.getBlocFree().getListeTuples().add(tup);
+  
+            }
+
+            
+
         }
     }
 }
