@@ -250,14 +250,15 @@ public class Sgbd {
         
         /*MC.hashTable(tableVille,"nom",3);
         MC.hashTable(tableEtudiant,"ville",3);*/
-        
+        System.out.println("Joiture en cours : ");
         Table tableJoin = MC.joinTable(tableVille,tableEtudiant, "nom","ville", 3);
         
-     /*   System.out.println(tableVille.toString());
+        System.out.println("Résultat de la jointure :");
+        System.out.println(tableVille.toString());
         System.out.println("-------------------------------------------------");
         System.out.println(tableEtudiant.toString());
-        System.out.println("-------------------------------------------------");*/
-      //  System.out.println(tableJoin.toString());
+        System.out.println("-------------------------------------------------");
+        System.out.println(tableJoin.toString());
         
       /*    int cpt = 0;
         
