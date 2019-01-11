@@ -150,6 +150,9 @@ public class MemoireCentrale {
     
     public static Table joinTable(Table tableA,Table tableB,String nomAttributA,String nomAttributB,int moduloHashage)
     {
+        
+        hashTable(tableA,nomAttributA,moduloHashage);
+        hashTable(tableB,nomAttributB,moduloHashage);
         List<Bucket> listBuc = Sgbd.MS.getListeBucket();
         int indice=0;
         Table tableResultat = Sgbd.createTable(tableA.getTable_name()+"_"+tableB.getTable_name());
@@ -295,6 +298,12 @@ public class MemoireCentrale {
                                                             
                                                         }
                                                         tableResultat.insertInto(tupTab);
+                                                        System.out.println("-----------------------------");
+                                                        System.out.println("Tuple A :");
+                                                        System.out.println(tupA.toString());
+                                                        System.out.println("Tuple B :");
+                                                        System.out.println(tupB.toString());
+                                                        System.out.println("-----------------------------");
 
                                                     }
                                                 }

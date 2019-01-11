@@ -195,7 +195,7 @@ public class Sgbd {
         
         listBloc = new ArrayList<Bloc>();
         
-        initBlocs(2000);
+        initBlocs(20000);
         
         Tuple tupleAntoine = new Tuple();
         tupleAntoine.getListeAttribut().add(new Attribut("char","ville","Dijon"));
@@ -248,16 +248,16 @@ public class Sgbd {
         
         
         
-        MC.hashTable(tableVille,"nom",3);
-        MC.hashTable(tableEtudiant,"ville",3);
+        /*MC.hashTable(tableVille,"nom",3);
+        MC.hashTable(tableEtudiant,"ville",3);*/
         
         Table tableJoin = MC.joinTable(tableVille,tableEtudiant, "nom","ville", 3);
         
-        System.out.println(tableVille.toString());
+     /*   System.out.println(tableVille.toString());
         System.out.println("-------------------------------------------------");
         System.out.println(tableEtudiant.toString());
-        System.out.println("-------------------------------------------------");
-        System.out.println(tableJoin.toString());
+        System.out.println("-------------------------------------------------");*/
+      //  System.out.println(tableJoin.toString());
         
       /*    int cpt = 0;
         
