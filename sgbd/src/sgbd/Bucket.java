@@ -48,7 +48,7 @@ public class Bucket {
         boolean blocFree = false;
         for(int i=0;i<listBloc.size();i++)
         {
-            if(listBloc.get(i).nbTuple <listBloc.get(i).nbTupleMax )
+            if(listBloc.get(i).getListeTuples().size() <listBloc.get(i).nbTupleMax )
             {
                 blocFree=true;
                 listBloc.get(i).addTupleToBloc(tup);

@@ -12,10 +12,13 @@ package sgbd;
 public class Buffer{
     
     Bloc bloc;
+    String typeContainer;
+
     
     public Buffer(Bloc bloc)
     {
         this.bloc = bloc;
+        typeContainer = null;
     }
     
     public Buffer()
@@ -30,8 +33,14 @@ public class Buffer{
     public void setBloc(Bloc bloc) {
         this.bloc = bloc;
     }
-    
-  
+
+    public String getTypeContainer() {
+        return typeContainer;
+    }
+
+    public void setTypeContainer(String typeContainer) {
+        this.typeContainer = typeContainer;
+    }
     
     
     

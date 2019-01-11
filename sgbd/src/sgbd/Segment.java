@@ -46,7 +46,7 @@ public class Segment {
         {
             for(int j=0;j< listExtent.get(i).getListeBloc().size();j++)
             {
-                if(listExtent.get(i).getListeBloc().get(j).getNbTuple() <listExtent.get(i).getListeBloc().get(j).getNbTupleMax()  )
+                if(listExtent.get(i).getListeBloc().get(j).getListeTuples().size() <listExtent.get(i).getListeBloc().get(j).getNbTupleMax()  )
                 {
                     return listExtent.get(i).getListeBloc().get(j);
                 }
@@ -59,6 +59,10 @@ public class Segment {
             listExtent.add(ext);
             
             return ext.getListeBloc().get(0);
+        }
+        else 
+        {
+            System.out.println("Pas assez de bloc contigu");
         }
         
         return bloc;

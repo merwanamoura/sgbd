@@ -36,5 +36,18 @@ public class Tuple {
     public void setTaille(int taille) {
         this.taille = taille;
     }
+    
+    @Override
+    public String toString()
+    {
+        String str ="";
+        
+        for( int i = 0 ; i < listeAttribut.size() ; i++)
+        {
+            str += listeAttribut.get(i).getType() +" " + listeAttribut.get(i).nom + " : " + listeAttribut.get(i).valeur + "\n";
+        }
+        
+        return str;
+    }
 
 }

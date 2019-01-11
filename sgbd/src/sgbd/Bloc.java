@@ -18,24 +18,23 @@ public class Bloc {
     int adresse;
     boolean alloue;
     int nbTupleMax;
-    int nbTuple;
+
 
     public Bloc(int taille, int adresse, boolean alloue, int nbTupleMax) {
         this.taille = taille;
         this.adresse = adresse;
         this.alloue = alloue;
         this.nbTupleMax = nbTupleMax;
-        this.nbTuple = 0;
         listeTuples = new ArrayList<Tuple>();
     }
     
     public void addTupleToBloc(Tuple tup)
     {
-        if(nbTuple <= nbTupleMax && tup != null)
+        if(listeTuples.size() < nbTupleMax && tup != null)
         {
             listeTuples.add(tup);
-            nbTuple++;
         }
+
         
     }
 
@@ -79,13 +78,18 @@ public class Bloc {
         this.nbTupleMax = nbTupleMax;
     }
 
-    public int getNbTuple() {
-        return nbTuple;
-    }
-
-    public void setNbTuple(int nbTuple) {
-        this.nbTuple = nbTuple;
-    }
     
+    @Override
+   public String toString()
+   {
+       String str="";
+       
+       for(int i = 0; i < listeTuples.size() ; i++)
+       {
+           str += listeTuples.get(i).toString() + "\n";
+       }
+       
+       return str;
+   }
     
 }

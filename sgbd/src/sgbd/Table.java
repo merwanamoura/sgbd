@@ -15,6 +15,7 @@ import java.util.List;
 public class Table {
     Segment segment;
     String table_name;
+    
 
 
     public Table(String table_name,Segment segment) {
@@ -39,19 +40,51 @@ public class Table {
         this.table_name = table_name;
     }
     
+    public int getNbTuples()
+    {
+        int nbTuples = 0;
+        
+        for ( int i = 0 ; i < this.segment.getListExtent().size() ; i++)
+        {
+            for ( int j = 0 ; j < this.segment.getListExtent().get(i).getListeBloc().size(); j++)
+            {
+                nbTuples += this.segment.getListExtent().get(i).getListeBloc().get(j).getListeTuples().size();
+            }
+        }
+        
+        return nbTuples;
+    }
+    
     public void insertInto(Tuple tup)
     {
         if(tup != null ) 
         {
-            if(this.segment.getBlocFree() != null)
+            Bloc bloc = this.segment.getBlocFree() ;
+            if(bloc!= null)
             {
 
-                this.segment.getBlocFree().getListeTuples().add(tup);
+                bloc.addTupleToBloc(tup);
   
             }
 
             
 
         }
+    }
+    
+    public String toString()
+    {
+        String str="";
+        
+        for( int i = 0 ; i < this.segment.getListExtent().size() ; i++)
+        {
+            for ( int j = 0 ; j < this.segment.getListExtent().get(i).getListeBloc().size() ; j++)
+            {
+                str = str + this.segment.getListExtent().get(i).getListeBloc().get(j).toString() + "\n";
+            }
+        }
+        
+        return str;
+        
     }
 }
