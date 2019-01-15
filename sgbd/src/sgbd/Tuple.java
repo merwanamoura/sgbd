@@ -44,7 +44,7 @@ public class Tuple {
         
         for( int i = 0 ; i < listeAttribut.size() ; i++)
         {
-            str += listeAttribut.get(i).getType() +" " + listeAttribut.get(i).nom + " : " + listeAttribut.get(i).valeur + "\n";
+            System.out.println( listeAttribut.get(i).getType() +" " + listeAttribut.get(i).nom + " : " + listeAttribut.get(i).valeur );
         }
         
         return str;

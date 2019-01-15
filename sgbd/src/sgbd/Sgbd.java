@@ -29,7 +29,7 @@ public class Sgbd {
             
             double val = Math.random();
             boolean bol=true;
-            if( val > 0.1)bol=false;
+            if( val >=0 )bol=false;
             
             Bloc bloc = new Bloc(8192,i,bol,nbTupleMax);
             listBloc.add(bloc);
@@ -114,6 +114,9 @@ public class Sgbd {
         }
     }
     
+     static List <String> listNomVille = new ArrayList <String>(
+     (Arrays.asList("Dijon", "Daix", "Norges","Chalon","Paris","Marseille","Lyon","Strasbourg")));
+    
     public static void creationEtudiant(int nbEtudiant, Table tableEtudiant)
     {
         
@@ -122,27 +125,8 @@ public class Sgbd {
             
             Tuple tuple = new Tuple();
             String ville = "";
-            double chanceVille = Math.random();
-            if(chanceVille <= 0.2)
-            {
-                ville="Dijon";
-            }
-            else if( chanceVille > 0.2 && chanceVille <= 0.4)
-            {
-                ville ="Daix";
-            }
-            else if( chanceVille > 0.4 && chanceVille <= 0.6)
-            {
-                ville="Norges";
-            }
-            else if( chanceVille > 0.6 && chanceVille <= 0.8)
-            {
-                ville="Paris";
-            }
-            else if ( chanceVille > 0.8)
-            {
-                ville="Chalon";
-            }
+            double chanceVille = Math.random()*(listNomVille.size());
+            ville = listNomVille.get((int)chanceVille);
             
             String nom = "nom" + i;
             String prenom = "prenom" + i;
@@ -157,7 +141,7 @@ public class Sgbd {
         
     }
     
-     public static void creationVille(String ville,Table tableVille)
+    public static void creationVille(String ville,Table tableVille)
     {
         int rand = (int) (Math.random()*4)+4;
         for(int i =0;i<rand;i++)
@@ -170,12 +154,11 @@ public class Sgbd {
             tuple.getListeAttribut().add(new Attribut("char","nom",ville));
             tuple.getListeAttribut().add(new Attribut("char","nbHabitant",nbHabitant));
             tableVille.insertInto(tuple);
+            
         }
-
+        System.out.println(ville+ "nbAdresses : "+rand);
     }
-    
-     static List <String> listNomVille = new ArrayList <String>(
-     (Arrays.asList("Dijon", "Daix", "Norges","Chalon","Paris")));
+   
      
     public static void initTableVille(Table tableVille)
     {
@@ -195,8 +178,8 @@ public class Sgbd {
         
         listBloc = new ArrayList<Bloc>();
         
-        initBlocs(20000);
-        
+        initBlocs(800000);
+            System.out.println("dk");
         Tuple tupleAntoine = new Tuple();
         tupleAntoine.getListeAttribut().add(new Attribut("char","ville","Dijon"));
         tupleAntoine.getListeAttribut().add(new Attribut("char","nom","TRAN"));
@@ -218,10 +201,10 @@ public class Sgbd {
         tableEtudiant.insertInto(tupleBastien);
 
         Table tableVille = createTable("Ville");
- 
+        int nbEtudiant = 10000+3;
+        creationEtudiant(nbEtudiant,tableEtudiant);
         
-       creationEtudiant(32,tableEtudiant);
-       initTableVille(tableVille);
+        initTableVille(tableVille);
        
        /*Segment seg = tableVille.getSegment();
         for(int i=0;i<seg.getListExtent().size();i++)
@@ -246,23 +229,22 @@ public class Sgbd {
         creationBucket();
         MS.setListeBucket(listBucket);
         
-        
-        
-        /*MC.hashTable(tableVille,"nom",3);
-        MC.hashTable(tableEtudiant,"ville",3);*/
+       
         System.out.println("Joiture en cours : ");
         Table tableJoin = MC.joinTable(tableVille,tableEtudiant, "nom","ville", 3);
         
-        System.out.println("Résultat de la jointure :");
+        /*System.out.println("Résultat de la jointure :");
         System.out.println(tableVille.toString());
         System.out.println("-------------------------------------------------");
-        System.out.println(tableEtudiant.toString());
+        System.out.println(tableEtudiant.toString());*/
         System.out.println("-------------------------------------------------");
-        System.out.println(tableJoin.toString());
+      //  tableJoin.toString();
+        System.out.println("Nombre de tuples de la table resultat :"+tableJoin.getNbTuples());
+        System.out.println("Il devrait y avoir en moyenne : "+nbEtudiant+"*"+"6"+"="+(nbEtudiant*6));
         
-      /*    int cpt = 0;
+          int cpt = 0;
         
-        for(int i=0;i<MS.listeBucket.size();i++)
+        /*for(int i=0;i<MS.listeBucket.size();i++)
         {
             for(int j = 0; j < MS.listeBucket.get(i).getListBloc().size();j++)
             {
@@ -274,9 +256,9 @@ public class Sgbd {
                     cpt +=1;
                 }
             }
-        }
+        }*/
         
-        System.out.println(cpt + " = "+ tableVille.getNbTuples() +" + " +tableEtudiant.getNbTuples());*/
+        //System.out.println(cpt + " = "+ tableVille.getNbTuples() +" + " +tableEtudiant.getNbTuples());
         
     }
     

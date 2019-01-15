@@ -86,7 +86,7 @@ public class Bloc {
        
        for(int i = 0; i < listeTuples.size() ; i++)
        {
-           str += listeTuples.get(i).toString() + "\n";
+           System.out.println( listeTuples.get(i).toString() );
        }
        
        return str;

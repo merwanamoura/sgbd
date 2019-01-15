@@ -80,7 +80,7 @@ public class Table {
         {
             for ( int j = 0 ; j < this.segment.getListExtent().get(i).getListeBloc().size() ; j++)
             {
-                str = str + this.segment.getListExtent().get(i).getListeBloc().get(j).toString() + "\n";
+                System.out.println( this.segment.getListExtent().get(i).getListeBloc().get(j).toString());
             }
         }
         

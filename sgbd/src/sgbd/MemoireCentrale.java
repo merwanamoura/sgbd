@@ -29,7 +29,7 @@ public class MemoireCentrale {
     }
     
 
-    public static int hashage(String valueToHash,int moduloHashage)
+    public static int hashage(String valueToHash,int moduloHashage)// DONNE LA VALEUR DE HASHAGE D UN TUPLE
     {
         int valeurHashage = 0 ;
         
@@ -43,7 +43,7 @@ public class MemoireCentrale {
        
     }
     
-    public static void hashBloc(String table_name,Bloc bloc,String nomAttribut,int moduloHashage,Buffer buf)
+    public static void hashBloc(String table_name,Bloc bloc,String nomAttribut,int moduloHashage,Buffer buf)// HACHAGE DE CHAQUE TUPLE DU BLOC PASSER EN PARAM
     {
         
         for(int i=0;i<bloc.getListeTuples().size();i++)
@@ -87,7 +87,7 @@ public class MemoireCentrale {
         }
     }
     
-    public static void hashTable(Table table,String nomAttribut,int moduloHashage)
+    public static void hashTable(Table table,String nomAttribut,int moduloHashage)//HACHAGE SUR TOUS LES BLOCS  DES EXTENTS D UNE TABLE PASSER EN PARAMETRE
     {
         Segment seg = table.getSegment();
         boolean hashDone = false;
@@ -157,6 +157,8 @@ public class MemoireCentrale {
         int indice=0;
         Table tableResultat = Sgbd.createTable(tableA.getTable_name()+"_"+tableB.getTable_name());
         
+        int nbEgalite = 0;
+        
        
         //ON BOUCLE SUR TOUS LES BUCKETS 
         while(indice < moduloHashage)
@@ -171,11 +173,13 @@ public class MemoireCentrale {
                 if(listBuc.get(k).getId_bucket().equals(tableA.table_name+indice))
                 {
                     bucA=listBuc.get(k);
+                    
                     nbBlocBucA = bucA.getListBloc().size();
                 }
                 if(listBuc.get(k).getId_bucket().equals(tableB.table_name+indice))
                 {
                     bucB=listBuc.get(k);
+                    
                     nbBlocBucB = bucB.getListBloc().size();
                 }
             }
@@ -202,18 +206,19 @@ public class MemoireCentrale {
                         while(dernierBlocBTraite<bucB.getListBloc().size())
                         {
                             
+                            
                             //PLACEMENT D'UN BLOC  Bi DANS UN BUFFER  
                             Buffer bufB = getBufferFree();
                             bufB.setBloc(bucB.getListBloc().get(dernierBlocBTraite)); // ON MET LE PREMIER BLOC DE B DANS LE BUFFER
                             bufB.setTypeContainer(tableB.getTable_name());
-
-                            
+                          
+                            dernierBlocATraite=0;
                             //BOUCLE TANT QU IL RESTE DES BLOCS DANS Ai
                             while(dernierBlocATraite<nbBlocBucA)
                             {
                                 //PLACEMENT DES M-1 BLOC Ai DANS LES M-1 BUFFER DISPONIBLE
                                 int limite;
-                                if(nbBlocBucA < getNbBufferFree())
+                                if(nbBlocBucA-dernierBlocATraite < getNbBufferFree())
                                 {
                                     limite = nbBlocBucA;
                                 }
@@ -281,9 +286,10 @@ public class MemoireCentrale {
                                                             valA= tupA.getListeAttribut().get(z).getValeur();
                                                         }
                                                     }
-
+                                                    nbEgalite++;
                                                     if(valA.equals(valB))
                                                     {
+                                                   //     nbEgalite++;
                                                         Tuple tupTab = new Tuple();
                                                         for(int i = 0; i< tupA.getListeAttribut().size();i++)
                                                         {
@@ -299,6 +305,8 @@ public class MemoireCentrale {
                                                         }
                                                         tableResultat.insertInto(tupTab);
                                                         System.out.println("-----------------------------");
+                                                        System.out.println("Bucket A :"+bucA.getId_bucket());
+                                                        System.out.println("Bucket B :"+bucB.getId_bucket());
                                                         System.out.println("Tuple A :");
                                                         System.out.println(tupA.toString());
                                                         System.out.println("Tuple B :");
@@ -340,6 +348,7 @@ public class MemoireCentrale {
                 indice+=1;
             }
         }  
+        System.out.println("Nombre de comparaison : "+nbEgalite);
         return tableResultat;
     }
 
